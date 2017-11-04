@@ -23,7 +23,7 @@ Classify_Choises = (
 )
 
 class Post(models.Model):
-	classify = models.CharField(max_length=6, choices=Classify_Choises, default='잡담')
+	classify = models.CharField(max_length=10, choices=Classify_Choises, default='잡담')
 	user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1)
 	title = models.CharField(max_length=120)
 	image = models.ImageField(upload_to=upload_location,
