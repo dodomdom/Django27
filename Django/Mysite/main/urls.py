@@ -27,6 +27,7 @@ from .views import (
     post_game,
     post_drama,
     post_mylog,
+    post_detail,
     )
 
 urlpatterns = [
@@ -36,5 +37,6 @@ urlpatterns = [
     url(r'^movie/$', post_movie, name='pmovie'),
     url(r'^game/$', post_game, name='pgame'),
     url(r'^drama/$', post_drama, name='pdrama'),
-    url(r'^mylog/$', post_computer, name='pmylog'),
+    url(r'^mylog/$', post_mylog, name='pmylog'),
+    url(r'^mydetail/$', post_detail, name='pmydetail'),
 ]

@@ -202,7 +202,6 @@ def post_game(request):
 		"suggest":"문의",
 		"mylog":"내가쓴글",
 		"value":"게임",
-
 	}
 	return render(request, "form.html", context)
 
@@ -249,6 +248,7 @@ def post_mylog(request):
 	query = request.GET.get("q")
 	if query:
 		queryset_list = queryset_list.filter(
+				Q(title__icontains=request.user)&
 				Q(title__icontains=query)|
 				Q(content__icontains=query)|
 				Q(user__first_name__icontains=query) |
@@ -278,4 +278,10 @@ def post_mylog(request):
 		"mylog":"내가쓴글",
 		"value":"내가쓴글",
 	}
-	return render(request, "form.html", context)
+	return render(request, "test.html", context)
+
+
+def post_detail(request):
+	return render(request, "post_detail.html", {})
+
+	

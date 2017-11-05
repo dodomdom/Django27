@@ -28,17 +28,17 @@
 	<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
 	
 	<!-- Animate.css -->
-	<link rel="stylesheet" href="/static/css/animate.css">
+	<link rel="stylesheet" href="/static/main/css/animate.css">
 	<!-- Icomoon Icon Fonts-->
-	<link rel="stylesheet" href="/static/css/icomoon.css">
+	<link rel="stylesheet" href="/static/main/css/icomoon.css">
 	<!-- Magnific Popup -->
-	<link rel="stylesheet" href="/static/css/magnific-popup.css">
+	<link rel="stylesheet" href="/static/main/css/magnific-popup.css">
 	<!-- Salvattore -->
-	<link rel="stylesheet" href="/static/css/salvattore.css">
+	<link rel="stylesheet" href="/static/main/css/salvattore.css">
 	<!-- Theme Style -->
-	<link rel="stylesheet" href="/static/css/style.css">
+	<link rel="stylesheet" href="/static/main/css/style.css">
 	<!-- Modernizr JS -->
-	<script src="/static/js/modernizr-2.6.2.min.js"></script>
+	<script src="/static/main/js/modernizr-2.6.2.min.js"></script>
 	<!-- FOR IE9 below -->
 	<!--[if lt IE 9]>
 	<script src="js/respond.min.js"></script>
@@ -59,11 +59,11 @@
 		<ul>
 
 			{% if user.is_authenticated %}
-			<li><a href="about.html">로그아웃</a></li>
-			<li><a href="index.html">내가 쓴 글</a></li>
+			<li><a href="/logout/">로그아웃</a></li>
+			<li><a href="/mylog/">내가 쓴 글</a></li>
 			{% else %}
-			<li><a href="about.html">로그인</a></li>
-			<li><a href="index.html">회원가입</a></li>
+			<li><a href="/login/">로그인</a></li>
+			<li><a href="/register/">회원가입</a></li>
 			{% endif %}
 			<li class="active"><a href="/">메인화면</a></li>
 			<br/>
@@ -153,19 +153,19 @@
 
 
 	<!-- jQuery -->
-	<script src="/static/js/jquery.min.js"></script>
+	<script src="/static/main/js/jquery.min.js"></script>
 	<!-- jQuery Easing -->
-	<script src="/static/js/jquery.easing.1.3.js"></script>
+	<script src="/static/main/js/jquery.easing.1.3.js"></script>
 	<!-- Bootstrap -->
-	<script src="/static/js/bootstrap.min.js"></script>
+	<script src="/static/main/js/bootstrap.min.js"></script>
 	<!-- Waypoints -->
-	<script src="/static/js/jquery.waypoints.min.js"></script>
+	<script src="/static/main/js/jquery.waypoints.min.js"></script>
 	<!-- Magnific Popup -->
-	<script src="/static/js/jquery.magnific-popup.min.js"></script>
+	<script src="/static/main/js/jquery.magnific-popup.min.js"></script>
 	<!-- Salvattore -->
-	<script src="/static/js/salvattore.min.js"></script>
+	<script src="/static/main/js/salvattore.min.js"></script>
 	<!-- Main JS -->
-	<script src="/static/js/main.js"></script>
+	<script src="/static/main/js/main.js"></script>
 
 	
 
