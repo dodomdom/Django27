@@ -20,9 +20,21 @@ from django.contrib import admin
 #from . import views
 
 from .views import (
-    post_list,
+    post_main,
+    post_chat,
+    post_computer,
+    post_movie,
+    post_game,
+    post_drama,
+    post_mylog,
     )
 
 urlpatterns = [
-    url(r'^$', post_list, name='list'),
+    url(r'^$', post_main, name='pmain'),
+    url(r'^chat/$', post_chat, name='pchat'),
+    url(r'^computer/$', post_computer, name='pcomputer'),
+    url(r'^movie/$', post_movie, name='pmovie'),
+    url(r'^game/$', post_game, name='pgame'),
+    url(r'^drama/$', post_drama, name='pdrama'),
+    url(r'^mylog/$', post_computer, name='pmylog'),
 ]
