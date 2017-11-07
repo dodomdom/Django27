@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-
+{% load crispy_forms_tags %}
 {% block extra_head %}
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -85,7 +85,7 @@
 			<li><a href="/game">게임</a></li>
 			<li><a href="/drama">드라마</a></li>
 			<br/>
-			<li><a href="#">문의</a></li>
+			<li><a href="/suggest">문의</a></li>
 			<br/>
 			<li>검색</li>
 			<li>
@@ -131,7 +131,19 @@
 					<h3>{{ instance.content }}</h3>
 					<br/><br/>
 					<div>
-					asdasdsadasd
+						<p class='lead'>댓글</p>
+						<form method="POST" action=".">{% csrf_token %}
+						{{ comment_form|crispy }}
+							<input type='submit' value="Post comment" class="btn btn-default">
+						</form>
+						{% for comment in comments %}
+						{{ comment.content_object }}
+						<blockquote>
+							<p>{{ comment.content }}</p>
+							<footer>작성자: {{ comment.user }} | {{ comment.timestamp|timesince }} 전</footer>
+						</blockquote>
+						<hr/>
+						{% endfor %}
 					</div>
 				</div>
         	</div>

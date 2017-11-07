@@ -5,7 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.conf import settings
 from django.db import models
 from django.core.urlresolvers import reverse
-
+from comments.models import Comment
 
 
 def upload_location(instance, filename):
@@ -52,9 +52,18 @@ class Post(models.Model):
 		ordering = ["-timestamp", "-updated"]
 
 	@property
+	def comments(self):
+		instance = self
+		qs =Comment.objects.filter_by_instance(instance)
+		return qs
+		
+	@property
 	def get_content_type(self):
 		instance = self
 		content_type = ContentType.objects.get_for_model(instance.__class__)
 		return content_type
+
+	
+
 
 # Create your models here.

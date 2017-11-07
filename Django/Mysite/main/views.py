@@ -1,15 +1,71 @@
 # -*- coding: utf-8 -*- 
 from __future__ import unicode_literals
-
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.contenttypes.models import ContentType
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 
+from comments.forms import CommentForm
+from comments.models import Comment
 from .models import Post
 from .forms import PostForm
+
+
+def post_create(request):
+	if not request.user.is_staff or not request.user.is_superuser:
+		raise Http404
+	form = PostForm(request.POST or None, request.FILES or None)
+	if form.is_valid():
+		instance = form.save(commit=False)
+		instance.save()
+		messages.success(request, "저장되었습니다.")
+		return HttpResponseRedirect(instance.get_absolute_url())
+	context = {
+		"form":form,
+	}
+	return render(request, "post_form.html", context)
+
+
+def post_detail(request, id=None):
+	instance = get_object_or_404(Post, id=id)	
+	initial_data = {
+			"content_type":instance.get_content_type,
+			"object_id":instance.id
+	}
+	form = CommentForm(request.POST or None, initial=initial_data)
+	if form.is_valid():
+		c_type = form.cleaned_data.get("content_type")
+		content_type = ContentType.objects.get(model=c_type)
+		obj_id = form.cleaned_data.get("object_id")
+		content_data = form.cleaned_data.get("content")
+		new_comment, create = Comment.objects.get_or_create(
+									user = request.user,
+									content_type = content_type,
+									object_id = obj_id,
+									content = content_data
+								)
+		if create:
+			print("Yeah it Worked")
+
+	comments = instance.comments
+	context = {
+		"title": instance.title,
+		"instance": instance,
+		"comments":comments,
+		"comment_form":form,
+	}
+	return render(request, "post_detail.html", context)
+
+def post_delete(request, id=None):
+	instance = get_object_or_404(Post, id=id)
+	if (request.user == instance.user) or request.user.is_staff or request.user.is_superuser:
+		instance.delete()
+		messages.success(request, "제거되었습니다.")
+		return redirect("main:pmain")
+	else:
+		return redirect("/error")
 
 def post_main(request):
 	query = request.GET.get("q")
@@ -52,6 +108,41 @@ def post_main(request):
 	}
 	return render(request, "index.html", context)
 
+def post_suggest(request):
+	query = request.GET.get("q")
+	queryset_list = Post.objects.filter(Q(classify__icontains = "문의"))
+	if query:
+		queryset_list = queryset_list.filter(
+				Q(title__icontains=query)|
+				Q(content__icontains=query)|
+				Q(user__first_name__icontains=query) |
+				Q(user__last_name__icontains=query)
+				).distinct()
+	paginator = Paginator(queryset_list, 5) # Show 25 contacts per page
+	page_request_var = "page"
+	page = request.GET.get(page_request_var)
+	try:
+		queryset = paginator.page(page)
+	except PageNotAnInteger:
+		# If page is not an integer, deliver first page.
+		queryset = paginator.page(1)
+	except EmptyPage:
+		# If page is out of range (e.g. 9999), deliver last page of results.
+		queryset = paginator.page(paginator.num_pages)
+	context = {
+		"object_list": queryset,
+		"page_request_var": page_request_var,
+		"main":"메인",
+		"computer":"컴퓨터",
+		"chatting":"잡담",
+		"drama":"드라마",
+		"movie":"영화",
+		"game":"게임",
+		"suggest":"문의",
+		"mylog":"내가쓴글",
+		"value":"문의",
+	}
+	return render(request, "index.html", context)
 
 def post_chat(request):
 	query = request.GET.get("q")
@@ -281,43 +372,7 @@ def post_mylog(request):
 	}
 	return render(request, "index.html", context)
 
-def post_create(request):
-	if not request.user.is_staff or not request.user.is_superuser:
-		raise Http404
-	form = PostForm(request.POST or None, request.FILES or None)
-	if form.is_valid():
-		instance = form.save(commit=False)
-		instance.save()
-		messages.success(request, "저장되었습니다.")
-		return HttpResponseRedirect(instance.get_absolute_url())
-	context = {
-		"form":form,
-	}
-	return render(request, "post_form.html", context)
 
-
-def post_detail(request, id=None):
-	instance = get_object_or_404(Post, id=id)
-	initial_data = {
-			"content_type":instance.get_content_type,
-			"object_id":instance.id
-	}
-
-	context = {
-		"title": instance.title,
-		"Login": "Login",
-		"instance": instance,
-	}
-	return render(request, "post_detail.html", context)
-
-def post_delete(request, id=None):
-	instance = get_object_or_404(Post, id=id)
-	if (request.user == instance.user) or request.user.is_staff or request.user.is_superuser:
-		instance.delete()
-		messages.success(request, "제거되었습니다.")
-		return redirect("main:pmain")
-	else:
-		return redirect("/error")
 	
 
 
