@@ -131,16 +131,39 @@
 					<h3>{{ instance.content }}</h3>
 					<br/><br/>
 					<div>
-						<p class='lead'>댓글</p>
+						<hr/>
+						{% if request.user.is_authenticated %}
 						<form method="POST" action=".">{% csrf_token %}
 						{{ comment_form|crispy }}
 							<input type='submit' value="Post comment" class="btn btn-default">
 						</form>
+						{% else %}
+						<p>로그인해야만 댓글을 입력할 수 있습니다.</p>
+						{% endif %}
 						{% for comment in comments %}
-						{{ comment.content_object }}
 						<blockquote>
 							<p>{{ comment.content }}</p>
-							<footer>작성자: {{ comment.user }} | {{ comment.timestamp|timesince }} 전</footer>
+							<footer>작성자: {{ comment.user }} | {{ comment.timestamp|timesince }} 전 | {% if comment.children.count > 0%}댓글 {{ comment.children.count }}{% if comment.children.count >= 1 %} | {% endif %}{% endif %}<a href='#' class = "comment-reply-button">Reply</a></footer>
+						<div class='comment-reply' style="display:none;">
+							{% for child_comment in comment.children %}
+								<blockquote>
+									<p>{{ child_comment.content }}</p>
+									<footer>작성자: {{ child_comment.user }} | {{ child_comment.timestamp|timesince }} 전</footer>
+								</blockquote>
+							{% endfor %}
+
+							{% if request.user.is_authenticated %}
+							<form method="POST" action=".">{% csrf_token %}
+								{{ comment_form|crispy }}
+								<input type='hidden' name="parent_id" value="{{ comment.id }}">
+								<input type='submit' value="댓글" class="btn btn-default">
+							</form>
+							{% else %}
+							<p>로그인해야만 댓글을 입력할 수 있습니다.</p>
+							{% endif %}
+						</div>
+
+
 						</blockquote>
 						<hr/>
 						{% endfor %}
@@ -190,5 +213,6 @@
 	<script src="/static/main/js/salvattore.min.js"></script>
 	<!-- Main JS -->
 	<script src="/static/main/js/main.js"></script>
+	<script src="/static/main/js/script.js"></script>
 
 {% endblock content %}
