@@ -9,19 +9,24 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 
 from .models import Post
+from .forms import PostForm
 
 def post_main(request):
-	queryset_list = Post.objects.all()#.order_by("-timestamp")
 	query = request.GET.get("q")
+	if not request.user.is_staff or not request.user.is_superuser:
+		queryset_list = Post.objects.filter(~Q(classify__icontains = "문의"))
+	else :
+		queryset_list = Post.objects.all()
 	if query:
 		queryset_list = queryset_list.filter(
+				Q(classify__icontains=query)|
 				Q(title__icontains=query)|
 				Q(content__icontains=query)|
 				Q(user__first_name__icontains=query) |
 				Q(user__last_name__icontains=query)
 				).distinct()
 
-	paginator = Paginator(queryset_list, 25) # Show 25 contacts per page
+	paginator = Paginator(queryset_list, 30) # Show 25 contacts per page
 	page_request_var = "page"
 	page = request.GET.get(page_request_var)
 	try:
@@ -35,25 +40,30 @@ def post_main(request):
 	context = {
 		"object_list": queryset,
 		"page_request_var": page_request_var,
-		"pass":"문의"
+		"main":"메인",
+		"computer":"컴퓨터",
+		"chatting":"잡담",
+		"drama":"드라마",
+		"movie":"영화",
+		"game":"게임",
+		"suggest":"문의",
+		"mylog":"내가쓴글",
+		"value":"메인",
 	}
 	return render(request, "index.html", context)
 
 
 def post_chat(request):
-	queryset_list = Post.objects.all()#.order_by("-timestamp")
 	query = request.GET.get("q")
-	query_c = "잡담"
+	queryset_list = Post.objects.filter(Q(classify__icontains = "잡담"))
 	if query:
 		queryset_list = queryset_list.filter(
-				Q(classify__icontains=query_c)&
 				Q(title__icontains=query)|
 				Q(content__icontains=query)|
 				Q(user__first_name__icontains=query) |
 				Q(user__last_name__icontains=query)
 				).distinct()
-
-	paginator = Paginator(queryset_list, 25) # Show 25 contacts per page
+	paginator = Paginator(queryset_list, 5) # Show 25 contacts per page
 	page_request_var = "page"
 	page = request.GET.get(page_request_var)
 	try:
@@ -67,6 +77,7 @@ def post_chat(request):
 	context = {
 		"object_list": queryset,
 		"page_request_var": page_request_var,
+		"main":"메인",
 		"computer":"컴퓨터",
 		"chatting":"잡담",
 		"drama":"드라마",
@@ -75,15 +86,14 @@ def post_chat(request):
 		"suggest":"문의",
 		"mylog":"내가쓴글",
 		"value":"잡담",
-
 	}
-	return render(request, "form.html", context)
+	return render(request, "index.html", context)
 
 
 def post_computer(request):
-	queryset_list = Post.objects.all()#.order_by("-timestamp")
 	query = request.GET.get("q")
-	query_c = "컴퓨터"
+	queryset_list = Post.objects.filter(Q(classify__icontains = "컴퓨터"))
+	
 	if query:
 		queryset_list = queryset_list.filter(
 				Q(classify__icontains=query_c)&
@@ -107,6 +117,7 @@ def post_computer(request):
 	context = {
 		"object_list": queryset,
 		"page_request_var": page_request_var,
+		"main":"메인",
 		"computer":"컴퓨터",
 		"chatting":"잡담",
 		"drama":"드라마",
@@ -115,22 +126,14 @@ def post_computer(request):
 		"suggest":"문의",
 		"mylog":"내가쓴글",
 		"value":"컴퓨터",
-
 	}
-	#if request.user.is_authenticated():
-	#	context = {
-	#		"Login":"Login"
-	#	}
-	#else:
-	#	context = {
-	#		"Login":"LogOut"
-	#	}
-	return render(request, "form.html", context)
+	
+	return render(request, "index.html", context)
 
 
 def post_movie(request):
-	queryset_list = Post.objects.all()#.order_by("-timestamp")
 	query = request.GET.get("q")
+	queryset_list = Post.objects.filter(Q(classify__icontains = "영화"))
 	query_c = "영화"
 	if query:
 		queryset_list = queryset_list.filter(
@@ -155,6 +158,7 @@ def post_movie(request):
 	context = {
 		"object_list": queryset,
 		"page_request_var": page_request_var,
+		"main":"메인",
 		"computer":"컴퓨터",
 		"chatting":"잡담",
 		"drama":"드라마",
@@ -163,13 +167,12 @@ def post_movie(request):
 		"suggest":"문의",
 		"mylog":"내가쓴글",
 		"value":"영화",
-
 	}
-	return render(request, "form.html", context)
+	return render(request, "index.html", context)
 
 def post_game(request):
-	queryset_list = Post.objects.all()#.order_by("-timestamp")
 	query = request.GET.get("q")
+	queryset_list = Post.objects.filter(Q(classify__icontains = "게임"))
 	query_c = "게임"
 	if query:
 		queryset_list = queryset_list.filter(
@@ -194,6 +197,7 @@ def post_game(request):
 	context = {
 		"object_list": queryset,
 		"page_request_var": page_request_var,
+		"main":"메인",
 		"computer":"컴퓨터",
 		"chatting":"잡담",
 		"drama":"드라마",
@@ -206,12 +210,10 @@ def post_game(request):
 	return render(request, "form.html", context)
 
 def post_drama(request):
-	queryset_list = Post.objects.all()#.order_by("-timestamp")
 	query = request.GET.get("q")
-	query_c = "드라마"
+	queryset_list = Post.objects.filter(Q(classify__icontains = "드라마"))
 	if query:
 		queryset_list = queryset_list.filter(
-				Q(classify__icontains=query_c)&
 				Q(title__icontains=query)|
 				Q(content__icontains=query)|
 				Q(user__first_name__icontains=query) |
@@ -232,6 +234,7 @@ def post_drama(request):
 	context = {
 		"object_list": queryset,
 		"page_request_var": page_request_var,
+		"main":"메인",
 		"computer":"컴퓨터",
 		"chatting":"잡담",
 		"drama":"드라마",
@@ -244,15 +247,12 @@ def post_drama(request):
 	return render(request, "form.html", context)
 
 def post_mylog(request):
-	queryset_list = Post.objects.all()#.order_by("-timestamp")
 	query = request.GET.get("q")
+	queryset_list = Post.objects.filter(Q(user=request.user))
 	if query:
 		queryset_list = queryset_list.filter(
-				Q(title__icontains=request.user)&
 				Q(title__icontains=query)|
-				Q(content__icontains=query)|
-				Q(user__first_name__icontains=query) |
-				Q(user__last_name__icontains=query)
+				Q(content__icontains=query)
 				).distinct()
 
 	paginator = Paginator(queryset_list, 25) # Show 25 contacts per page
@@ -269,6 +269,7 @@ def post_mylog(request):
 	context = {
 		"object_list": queryset,
 		"page_request_var": page_request_var,
+		"main":"메인",
 		"computer":"컴퓨터",
 		"chatting":"잡담",
 		"drama":"드라마",
@@ -278,10 +279,47 @@ def post_mylog(request):
 		"mylog":"내가쓴글",
 		"value":"내가쓴글",
 	}
-	return render(request, "test.html", context)
+	return render(request, "index.html", context)
+
+def post_create(request):
+	if not request.user.is_staff or not request.user.is_superuser:
+		raise Http404
+	form = PostForm(request.POST or None, request.FILES or None)
+	if form.is_valid():
+		instance = form.save(commit=False)
+		instance.save()
+		messages.success(request, "저장되었습니다.")
+		return HttpResponseRedirect(instance.get_absolute_url())
+	context = {
+		"form":form,
+	}
+	return render(request, "post_form.html", context)
 
 
-def post_detail(request):
-	return render(request, "post_detail.html", {})
+def post_detail(request, id=None):
+	instance = get_object_or_404(Post, id=id)
+	initial_data = {
+			"content_type":instance.get_content_type,
+			"object_id":instance.id
+	}
+
+	context = {
+		"title": instance.title,
+		"Login": "Login",
+		"instance": instance,
+	}
+	return render(request, "post_detail.html", context)
+
+def post_delete(request, id=None):
+	instance = get_object_or_404(Post, id=id)
+	if (request.user == instance.user) or request.user.is_staff or request.user.is_superuser:
+		instance.delete()
+		messages.success(request, "제거되었습니다.")
+		return redirect("main:pmain")
+	else:
+		return redirect("/error")
+	
+
+
 
 	

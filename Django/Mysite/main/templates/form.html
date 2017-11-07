@@ -58,28 +58,7 @@
 		{% endif %}
 		<ul>
 
-			{% if user.is_authenticated %}
-			<li><a href="/logout/">로그아웃</a></li>
-			<li><a href="/mylog/">내가 쓴 글</a></li>
-			{% else %}
-			<li><a href="/login/">로그인</a></li>
-			<li><a href="/register/">회원가입</a></li>
-			{% endif %}
-			<li><a href="/">메인화면</a></li>
-			<br/>
-			<li {% if chatting == value %}class="active"{% endif %}><a href="/chat">잡담</a></li>
-			<li {% if computer == value %}class="active"{% endif %}><a href="/computer">컴퓨터</a></li>
-			<li {% if movie == value %}class="active"{% endif %}><a href="/movie">영화</a></li>
-			<li {% if game == value %}class="active"{% endif %}><a href="/game">게임</a></li>
-			<li {% if drama == value %}class="active"{% endif %}><a href="/drama">드라마</a></li>
-			<br/>
-			<li {% if computer == value %}class="active"{% endif %}><a href="#">문의</a></li>
-			<br/>
-			<li>검색</li>
-			<li>
-				<form method='GET' action=''>
-			    <input type='text' name='q' placeholder='Search posts' value='{{ request.GET.q }}'/>
-			</li>
+
 			
 		</ul>
 		<h3 class="fh5co-lead">Connect with us</h3>

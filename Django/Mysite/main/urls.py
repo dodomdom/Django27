@@ -28,6 +28,7 @@ from .views import (
     post_drama,
     post_mylog,
     post_detail,
+    post_delete,
     )
 
 urlpatterns = [
@@ -38,5 +39,7 @@ urlpatterns = [
     url(r'^game/$', post_game, name='pgame'),
     url(r'^drama/$', post_drama, name='pdrama'),
     url(r'^mylog/$', post_mylog, name='pmylog'),
-    url(r'^mydetail/$', post_detail, name='pmydetail'),
+    url(r'^post/(?P<id>\d+)/$', post_detail, name='detail'),
+    url(r'^post/(?P<id>\d+)/delete/$', post_delete, name='delete'),
 ]
+

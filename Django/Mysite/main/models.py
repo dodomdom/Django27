@@ -43,9 +43,18 @@ class Post(models.Model):
 		return self.title
 
 	def get_absolute_url(self):
-		return reverse("Main:detail", kwargs={'id': self.id})
+		return reverse("main:detail", kwargs={'id': self.id})
+		
+	def get_absolute_delete(self):
+		return reverse("main:delete", kwargs={'id': self.id})
 
 	class Meta:
 		ordering = ["-timestamp", "-updated"]
+
+	@property
+	def get_content_type(self):
+		instance = self
+		content_type = ContentType.objects.get_for_model(instance.__class__)
+		return content_type
 
 # Create your models here.

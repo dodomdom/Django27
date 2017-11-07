@@ -9,6 +9,19 @@
 	<meta name="keywords" content="free html5, free template, free bootstrap, html5, css3, mobile first, responsive" />
 	<meta name="author" content="FREEHTML5.CO" />
 
+  <!-- 
+	//////////////////////////////////////////////////////
+
+	FREE HTML5 TEMPLATE 
+	DESIGNED & DEVELOPED by FREEHTML5.CO
+		
+	Website: 		http://freehtml5.co/
+	Email: 			info@freehtml5.co
+	Twitter: 		http://twitter.com/fh5co
+	Facebook: 		https://www.facebook.com/fh5co
+
+	//////////////////////////////////////////////////////
+	 -->
 
   <!-- Facebook and Twitter integration -->
 	<meta property="og:title" content=""/>
@@ -57,38 +70,46 @@
 		<h1 class="fh5co-lead">guest</h1>
 		{% endif %}
 		<ul>
-
 			{% if user.is_authenticated %}
-			<li><a href="about.html">로그아웃</a></li>
-			<li><a href="index.html">내가 쓴 글</a></li>
+			<li><a href="/logout/">로그아웃</a></li>
+			<li><a href="/mylog/">내가 쓴 글</a></li>
 			{% else %}
-			<li><a href="about.html">로그인</a></li>
-			<li><a href="registry">회원가입</a></li>
+			<li><a href="/login/">로그인</a></li>
+			<li><a href="/register/">회원가입</a></li>
 			{% endif %}
 			<li><a href="/">메인화면</a></li>
 			<br/>
-			<li {% if chatting == value %}class="active"{% endif %}><a href="/chat">잡담</a></li>
-			<li {% if computer == value %}class="active"{% endif %}><a href="/computer">컴퓨터</a></li>
-			<li {% if movie == value %}class="active"{% endif %}><a href="/movie">영화</a></li>
-			<li {% if game == value %}class="active"{% endif %}><a href="/game">게임</a></li>
-			<li {% if drama == value %}class="active"{% endif %}><a href="/drama">드라마</a></li>
+			<li><a href="/chat">잡담</a></li>
+			<li><a href="/computer">컴퓨터</a></li>
+			<li><a href="/movie">영화</a></li>
+			<li><a href="/game">게임</a></li>
+			<li><a href="/drama">드라마</a></li>
 			<br/>
-			<li {% if computer == value %}class="active"{% endif %}><a href="#">문의</a></li>
+			<li><a href="#">문의</a></li>
 			<br/>
 			<li>검색</li>
 			<li>
 				<form method='GET' action=''>
 			    <input type='text' name='q' placeholder='Search posts' value='{{ request.GET.q }}'/>
 			</li>
-			
 		</ul>
+		<h3 class="fh5co-lead">Connect with us</h3>
+		<p class="fh5co-social-icons">
+			<a href="#"><i class="icon-twitter"></i></a>
+			<a href="#"><i class="icon-facebook"></i></a>
+			<a href="#"><i class="icon-instagram"></i></a>
+			<a href="#"><i class="icon-dribbble"></i></a>
+			<a href="#"><i class="icon-youtube"></i></a>
+		</p>
 	</div>
 	<header id="fh5co-header" role="banner">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
 					<a href="#" class="fh5co-menu-btn js-fh5co-menu-btn">Menu <i class="icon-menu"></i></a>
-					<a class="navbar-brand" href="index.html">Hydrogen</a>		
+					<a class="navbar-brand" href="/">도돔돔</a>
+					
+					</form>	
 				</div>
 			</div>
 		</div>
@@ -100,19 +121,19 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-8 col-md-offset-2">
-					<h2>Personal Bio</h2>
+					<h2>{{ instance.title }} <small>{{ instance.user }}</small></h2>
 					<div class="fh5co-spacer fh5co-spacer-sm"></div>
 					<p>
-					<img src="/static/main/images/img_29_large.jpg" alt="Free HTML5 template by FREEHTML5.co" class="img-rounded img-responsive"></p>
-
-					<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean. A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth. Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar.</p>
-				
-					<p> The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn’t listen. She packed her seven versalia, put her initial into the belt and made herself on the way. When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane. </p>
-					
-					
+					{% if instance.image %}
+					<img src='{{ instance.image.url }}' class='img-responsive'/>
+					{% endif %}
+					<p>게시:{{ instance.timestamp|timesince }} | 변경: {{ instance.updated|timesince }}</p>
+					<h3>{{ instance.content }}</h3>
+					<br/><br/>
+					<div>
+					asdasdsadasd
+					</div>
 				</div>
-				
-        		
         	</div>
        </div>
 	</div>
@@ -122,18 +143,25 @@
 		<div class="container">
 			<div class="row row-padded">
 				<div class="col-md-12 text-center">
+					{% if request.user.is_staff or request.user.is_superuser %}
 					<p class="fh5co-social-icons">
-						<a href="#"><i class="icon-twitter"></i></a>
-						<a href="#"><i class="icon-facebook"></i></a>
-						<a href="#"><i class="icon-instagram"></i></a>
-						<a href="#"><i class="icon-dribbble"></i></a>
-						<a href="#"><i class="icon-youtube"></i></a>
+						<a href="#"><i class="icon-instagram">수정하기</i></a>
+						<a href="delete"><i class="icon-dribbble">삭제</i></a>
 					</p>
+					{% elif request.user == instance.user %}
+					<p class="fh5co-social-icons">
+						<a href="#"><i class="icon-instagram">수정하기</i></a>
+						<a href="delete"><i class="icon-dribbble">삭제</i></a>
+					</p>
+					{% endif %}
 					<p><small>&copy; Hydrogen Free HTML5 Template. All Rights Reserved. <br>Designed by: <a href="http://freehtml5.co/" target="_blank">FREEHTML5.co</a> | Images by: <a href="http://pexels.com" target="_blank">Pexels</a> </small></p>
+					
 				</div>
+
 			</div>
 		</div>
 	</footer>
+	
 
 
 	<!-- jQuery -->

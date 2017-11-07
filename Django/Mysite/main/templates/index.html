@@ -57,7 +57,6 @@
 		<h1 class="fh5co-lead">guest</h1>
 		{% endif %}
 		<ul>
-
 			{% if user.is_authenticated %}
 			<li><a href="/logout/">로그아웃</a></li>
 			<li><a href="/mylog/">내가 쓴 글</a></li>
@@ -65,22 +64,21 @@
 			<li><a href="/login/">로그인</a></li>
 			<li><a href="/register/">회원가입</a></li>
 			{% endif %}
-			<li class="active"><a href="/">메인화면</a></li>
+			<li {% if main == value %}class="active"{% endif %}><a href="/">메인화면</a></li>
 			<br/>
-			<li><a href="/chat">잡담</a></li>
-			<li><a href="/computer">컴퓨터</a></li>
-			<li><a href="/movie">영화</a></li>
-			<li><a href="/game">게임</a></li>
-			<li><a href="/drama">드라마</a></li>
+			<li {% if chatting == value %}class="active"{% endif %}><a href="/chat">잡담</a></li>
+			<li {% if computer == value %}class="active"{% endif %}><a href="/computer">컴퓨터</a></li>
+			<li {% if movie == value %}class="active"{% endif %}><a href="/movie">영화</a></li>
+			<li {% if game == value %}class="active"{% endif %}><a href="/game">게임</a></li>
+			<li {% if drama == value %}class="active"{% endif %}><a href="/drama">드라마</a></li>
 			<br/>
-			<li><a href="#">문의</a></li>
+			<li {% if computer == value %}class="active"{% endif %}><a href="#">문의</a></li>
 			<br/>
 			<li>검색</li>
 			<li>
 				<form method='GET' action=''>
 			    <input type='text' name='q' placeholder='Search posts' value='{{ request.GET.q }}'/>
 			</li>
-			
 		</ul>
 		<h3 class="fh5co-lead">Connect with us</h3>
 		<p class="fh5co-social-icons">
@@ -111,40 +109,53 @@
 
 			<div class="row">
 
-        <div id="fh5co-board" data-columns>
-        	{% for obj in object_list %}
-        	{% if obj.classify != pass %}
-        	<div class="item">
-        		
-        		<div class="animate-box">
-        			{% if obj.image %}
-	        			<a href="{{ obj.image.url }}" class="image-popup fh5co-board-img" title="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, eos?"><img src="{{ obj.image.url }}" alt="Free HTML5 Bootstrap template"></a>
-	        		{% else %}
-	        			<a href="/static/images/img_1.jpg" class="image-popup fh5co-board-img" title="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, eos?"><img src="/static/images/img_1.jpg" alt="Free HTML5 Bootstrap template"></a>
-	        		{% endif %}
+        		<div id="fh5co-board" data-columns>
+        		{% for obj in object_list %}
+        			<div class="item">
+        				<div class="animate-box">
+        				{{ obj.user }}
+        				{% if obj.image %}
+	        				<a href="{{ obj.image.url }}" class="image-popup fh5co-board-img" title="{{ obj.content|truncatechars:20 }}"><img src="{{ obj.image.url }}" alt="Free HTML5 Bootstrap template"></a>
+	        			{% else %}
+	        				<a href="/static/images/img_1.jpg" class="image-popup fh5co-board-img" title="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, eos?"><img src="/static/images/img_1.jpg" alt="Free HTML5 Bootstrap template"></a>
+	        			{% endif %}
+        				</div>
+        				<div class="fh5co-desc"><a href="{{ obj.get_absolute_url }}"><h3>{{ obj.title|truncatechars:15 }}</h3></a>{{ obj.content }}
+        				</div>
+
+        			</div>
+
+        			{% endfor %}
         		</div>
-        		
-        		
-        		<div class="fh5co-desc"><a href><h3>{{ obj.title|truncatechars:15 }}</h3></a>{{ obj.content }}</div>
         	</div>
-        	{% endif %}
-        	{% endfor %}
-        </div>
-        </div>
-       </div>
+       	</div>
 	</div>
 
 	<footer id="fh5co-footer">
-		
 		<div class="container">
 			<div class="row row-padded">
 				
 				<div class="col-md-12 text-center">
+					{% if request.user.is_authenticated %}
 					<p class="fh5co-social-icons">
-						<a href="#"><i class="icon-instagram"></i></a>
-						<a href="#"><i class="icon-dribbble"></i></a>
-						<a href="#"><i class="icon-youtube"></i></a>
+						<a href="#"><i class="icon-instagram">글쓰기</i></a>
 					</p>
+					{% endif %}
+					<div class="pagination">
+    					<span class="step-links">
+        					{% if object_list.has_previous %}
+            				<a href="?{{ page_request_var }}={{ object_list.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">previous</a>
+        					{% endif %}
+
+        					<span class="current">
+            				Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}.
+        					</span>
+
+        					{% if object_list.has_next %}
+            				<a href="?{{ page_request_var }}={{ object_list.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">next</a>
+        					{% endif %}
+    					</span>
+					</div>
 					<p><small>&copy; Hydrogen Free HTML5 Template. All Rights Reserved. <br>Designed by: <a href="http://freehtml5.co/" target="_blank">FREEHTML5.co</a> | Images by: <a href="http://pexels.com" target="_blank">Pexels</a> </small></p>
 				</div>
 			</div>
