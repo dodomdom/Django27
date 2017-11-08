@@ -129,7 +129,7 @@
 								<i class="icon-instagram">저장하기</i>
 							</button>
 						</p>
-						{% elif request.user == instance.user %}
+						{% elif request.user.is_authenticated %}
 						<p class="fh5co-social-icons">
 							<button type="submit">
 								<i class="icon-instagram"><h4>저장하기<h4></i>
