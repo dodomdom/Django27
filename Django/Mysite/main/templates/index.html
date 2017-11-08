@@ -120,7 +120,7 @@
 	        				<a href="/static/images/img_1.jpg" class="image-popup fh5co-board-img" title="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, eos?"><img src="/static/images/img_1.jpg" alt="Free HTML5 Bootstrap template"></a>
 	        			{% endif %}
         				</div>
-        				<div class="fh5co-desc"><a href="{{ obj.get_absolute_url }}"><h3>{{ obj.title|truncatechars:15 }}</h3></a>{{ obj.content }}
+        				<div class="fh5co-desc"><a href="{{ obj.get_absolute_url }}"><h3>{{ obj.title|truncatechars:15 }}</h3></a>{{ obj.content|linebreaks }}
         				</div>
 
         			</div>
@@ -138,7 +138,7 @@
 				<div class="col-md-12 text-center">
 					{% if request.user.is_authenticated %}
 					<p class="fh5co-social-icons">
-						<a href="#"><i class="icon-instagram">글쓰기</i></a>
+						<a href="/create/"><i class="icon-instagram">글쓰기</i></a>
 					</p>
 					{% endif %}
 					<div class="pagination">

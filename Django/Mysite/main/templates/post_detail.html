@@ -128,7 +128,7 @@
 					<img src='{{ instance.image.url }}' class='img-responsive'/>
 					{% endif %}
 					<p>게시:{{ instance.timestamp|timesince }} | 변경: {{ instance.updated|timesince }}</p>
-					<h3>{{ instance.content }}</h3>
+					<h3>{{ instance.content|linebreaks }}</h3>
 					<br/><br/>
 					<div>
 						<hr/>
@@ -180,12 +180,12 @@
 				<div class="col-md-12 text-center">
 					{% if request.user.is_staff or request.user.is_superuser %}
 					<p class="fh5co-social-icons">
-						<a href="#"><i class="icon-instagram">수정하기</i></a>
+						<a href="edit"><i class="icon-instagram">수정하기</i></a>
 						<a href="delete"><i class="icon-dribbble">삭제</i></a>
 					</p>
 					{% elif request.user == instance.user %}
 					<p class="fh5co-social-icons">
-						<a href="#"><i class="icon-instagram">수정하기</i></a>
+						<a href="edit"><i class="icon-instagram">수정하기</i></a>
 						<a href="delete"><i class="icon-dribbble">삭제</i></a>
 					</p>
 					{% endif %}
