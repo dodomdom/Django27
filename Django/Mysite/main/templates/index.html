@@ -117,7 +117,7 @@
         				{% if obj.image %}
 	        				<a href="{{ obj.image.url }}" class="image-popup fh5co-board-img" title="{{ obj.content|truncatechars:20 }}"><img src="{{ obj.image.url }}" alt="Free HTML5 Bootstrap template"></a>
 	        			{% else %}
-	        				<a href="/static/images/img_1.jpg" class="image-popup fh5co-board-img" title="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, eos?"><img src="/static/images/img_1.jpg" alt="Free HTML5 Bootstrap template"></a>
+	        				<a href="/static/main/images/img_1.jpg" class="image-popup fh5co-board-img" title="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, eos?"><img src="/static/main/images/img_1.jpg" alt="Free HTML5 Bootstrap template"></a>
 	        			{% endif %}
         				</div>
         				<div class="fh5co-desc"><a href="{{ obj.get_absolute_url }}"><h3>{{ obj.title|truncatechars:15 }}</h3></a>{{ obj.content|linebreaks }}

@@ -18,13 +18,10 @@ def post_create(request):
 		form = PostForm(request.POST or None, request.FILES or None)
 		if form.is_valid():
 			instance = form.save(commit=False)
+			instance.user=request.user
 			instance.save()
 			messages.success(request, "저장되었습니다.")
 			return HttpResponseRedirect(instance.get_absolute_url())
-		#if request.method == "POST":
-		#	print "title"+request.POST.get("content")
-		#	title = request.POST.get("title")
-		#	Post.objects.create(title=title)
 		context = {
 			"form":form,
 		}
@@ -335,7 +332,7 @@ def post_game(request):
 		"mylog":"내가쓴글",
 		"value":"게임",
 	}
-	return render(request, "form.html", context)
+	return render(request, "index.html", context)
 
 def post_drama(request):
 	query = request.GET.get("q")
@@ -372,7 +369,7 @@ def post_drama(request):
 		"mylog":"내가쓴글",
 		"value":"드라마",
 	}
-	return render(request, "form.html", context)
+	return render(request, "index.html", context)
 
 def post_mylog(request):
 	query = request.GET.get("q")

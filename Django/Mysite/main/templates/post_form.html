@@ -123,16 +123,10 @@
 				<div class="col-md-8 col-md-offset-2">
 					<form method='POST' action='' enctype='multipart/form-data' content='text/html; charset=UTF-8'>{% csrf_token %}
 						{{ form|crispy }}
-						{% if request.user.is_staff or request.user.is_superuser %}
+						{% if request.user.is_authenticated %}
 						<p class="fh5co-social-icons">
-							<button type="submit">
-								<i class="icon-instagram">저장하기</i>
-							</button>
-						</p>
-						{% elif request.user.is_authenticated %}
-						<p class="fh5co-social-icons">
-							<button type="submit">
-								<i class="icon-instagram"><h4>저장하기<h4></i>
+							<button type="submit" class="btn btn-warning">
+								<div>저장하기<div>
 							</button>
 						</p>
 					{% endif %}

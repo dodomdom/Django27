@@ -143,7 +143,7 @@
 						{% for comment in comments %}
 						<blockquote>
 							<p>{{ comment.content }}</p>
-							<footer>작성자: {{ comment.user }} | {{ comment.timestamp|timesince }} 전 | {% if comment.children.count > 0%}댓글 {{ comment.children.count }}{% if comment.children.count >= 1 %} | {% endif %}{% endif %}<a href='#' class = "comment-reply-button">Reply</a></footer>
+							<footer>작성자: {{ comment.user }} | {{ comment.timestamp|timesince }} 전 | {% if comment.children.count > 0%}댓글 {{ comment.children.count }}{% if comment.children.count >= 1 %} | {% endif %}{% endif %}<a href='#' class = "comment-reply-btn">Reply</a></footer>
 						<div class='comment-reply' style="display:none;">
 							{% for child_comment in comment.children %}
 								<blockquote>
@@ -214,5 +214,11 @@
 	<!-- Main JS -->
 	<script src="/static/main/js/main.js"></script>
 	<script src="/static/main/js/script.js"></script>
+	<script>
+		$(".comment-reply-btn").click(function(event){
+            event.preventDefault();
+            $(this).parent().next(".comment-reply").fadeToggle();
+        })
+	</script>
 
 {% endblock content %}

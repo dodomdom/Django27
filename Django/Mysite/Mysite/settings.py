@@ -85,11 +85,11 @@ WSGI_APPLICATION = 'Mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'MariaDB',
-        'USER' : 'inhatc',
-        'PASSWORD' : 'inhatc2017',
-        'HOST' : 'ec2-52-66-44-241.ap-south-1.compute.amazonaws.com',
-        'PORT' : '3306',
+        'NAME': 'Django',
+        'USER' : 'Django',
+        'PASSWORD' : 'inhatc04',
+        'HOST' : '127.0.0.1',
+        'PORT' : '',
     }
 }
 
