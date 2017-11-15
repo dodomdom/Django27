@@ -26,7 +26,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '5l8u#ze^8p3(@thhlo$8*_46q%8+05x4^-i+i(vn67z9s-b@(l'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -88,7 +88,7 @@ DATABASES = {
         'NAME': 'Django',
         'USER' : 'Django',
         'PASSWORD' : 'inhatc04',
-        'HOST' : '127.0.0.1',
+        'HOST' : 'localhost',
         'PORT' : '',
     }
 }

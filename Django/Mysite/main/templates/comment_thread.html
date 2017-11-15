@@ -108,7 +108,6 @@
 				<div class="col-md-12">
 					<a href="#" class="fh5co-menu-btn js-fh5co-menu-btn">Menu <i class="icon-menu"></i></a>
 					<a class="navbar-brand" href="/">도돔돔</a>
-					
 					</form>	
 				</div>
 			</div>
@@ -121,30 +120,11 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-md-8 col-md-offset-2">
-					<h2>{{ instance.title }} <small>{{ instance.user }}</small></h2>
-					<div class="fh5co-spacer fh5co-spacer-sm"></div>
-					<p>
-					{% if instance.image %}
-					<img src='{{ instance.image.url }}' class='img-responsive'/>
-					{% endif %}
-					<p>게시:{{ instance.timestamp|timesince }} | 변경: {{ instance.updated|timesince }}</p>
-					<h3>{{ instance.content|linebreaks }}</h3>
-					<br/><br/>
 					<div>
-						<hr/>
-						{% if request.user.is_authenticated %}
-						<form method="POST" action=".">{% csrf_token %}
-						{{ comment_form|crispy }}
-							<input type='submit' value="Post comment" class="btn btn-default">
-						</form>
-						{% else %}
-						<p>로그인해야만 댓글을 입력할 수 있습니다.</p>
-						{% endif %}
-						{% for comment in comments %}
-						<blockquote>
 							<p>{{ comment.content }}</p>
-							<footer>작성자: {{ comment.user }} | {{ comment.timestamp|timesince }} 전 | {% if comment.children.count > 0%}댓글 {{ comment.children.count }}{% if comment.children.count >= 1 %} | {% endif %}{% endif %}<a href='#' class = "comment-reply-btn">Reply</a> | <a href='{{ comment.get_absolute_url }}' class = "">Detail</a></footer>
-						<div class='comment-reply' style="display:none;">
+							<footer>작성자: {{ comment.user }} | {{ comment.timestamp|timesince }} 전 | {% if comment.children.count > 0%}댓글 {{ comment.children.count }}{% if comment.children.count >= 1 %} | {% endif %}{% endif %}</footer>
+							<hr/>
+							<div>
 							{% for child_comment in comment.children %}
 								<blockquote>
 									<p>{{ child_comment.content }}</p>
@@ -154,19 +134,15 @@
 
 							{% if request.user.is_authenticated %}
 							<form method="POST" action=".">{% csrf_token %}
-								{{ comment_form|crispy }}
+								{{ form|crispy }}
 								<input type='hidden' name="parent_id" value="{{ comment.id }}">
 								<input type='submit' value="댓글" class="btn btn-default">
 							</form>
 							{% else %}
 							<p>로그인해야만 댓글을 입력할 수 있습니다.</p>
 							{% endif %}
-						</div>
-
-
-						</blockquote>
+							</div>
 						<hr/>
-						{% endfor %}
 					</div>
 				</div>
         	</div>
@@ -178,17 +154,6 @@
 		<div class="container">
 			<div class="row row-padded">
 				<div class="col-md-12 text-center">
-					{% if request.user.is_staff or request.user.is_superuser %}
-					<p class="fh5co-social-icons">
-						<a href="edit"><i class="icon-instagram">수정하기</i></a>
-						<a href="delete"><i class="icon-dribbble">삭제</i></a>
-					</p>
-					{% elif request.user == instance.user %}
-					<p class="fh5co-social-icons">
-						<a href="edit"><i class="icon-instagram">수정하기</i></a>
-						<a href="delete"><i class="icon-dribbble">삭제</i></a>
-					</p>
-					{% endif %}
 					<p><small>&copy; Hydrogen Free HTML5 Template. All Rights Reserved. <br>Designed by: <a href="http://freehtml5.co/" target="_blank">FREEHTML5.co</a> | Images by: <a href="http://pexels.com" target="_blank">Pexels</a> </small></p>
 					
 				</div>

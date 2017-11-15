@@ -6,13 +6,14 @@ from django.db.models import Q
 from django.contrib import messages
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
 
 from comments.forms import CommentForm
 from comments.models import Comment
 from .models import Post
 from .forms import PostForm
 
-
+@login_required(login_url='/login/')
 def post_create(request):
 	if request.user.is_authenticated():
 		form = PostForm(request.POST or None, request.FILES or None)
@@ -99,7 +100,7 @@ def post_delete(request, id=None):
 		messages.success(request, "제거되었습니다.")
 		return redirect("main:pmain")
 	else:
-		return redirect("/")
+		return redirect("/login/")
 
 def post_main(request):
 	query = request.GET.get("q")

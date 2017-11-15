@@ -1,4 +1,4 @@
-"""Mysite URL Configuration
+"""MySite URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.9/topics/http/urls/
@@ -14,22 +14,17 @@ Including another URLconf
     2. Import the include() function: from django.conf.urls import url, include
     3. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-from django.conf import settings
-from django.conf.urls.static import static
 from django.conf.urls import include, url
 from django.contrib import admin
 
-from accounts.views import (login_view, register_view, logout_view)
+#from . import views
+
+from .views import (
+    comment_thread,
+    )
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^login/', login_view, name='login'),
-    url(r'^register/', register_view, name='register'),
-    url(r'^logout/', logout_view, name='logout'),
-    url(r'^', include("main.urls", namespace='main')),
-    url(r'^comments/', include("comments.urls", namespace='comments')),
+    url(r'^(?P<id>\d+)/$', comment_thread, name='thread'),
+    #url(r'^post/(?P<id>\d+)/delete/$', comment_delete, name='cdelete'),
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
