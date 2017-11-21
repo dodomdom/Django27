@@ -7,6 +7,9 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from comments.models import Comment
 
+from django.utils.safestring import mark_safe
+from markdown_deux import markdown
+
 
 def upload_location(instance, filename):
 	return "%s/%s" %(instance.id, filename)
@@ -50,6 +53,11 @@ class Post(models.Model):
 
 	class Meta:
 		ordering = ["-timestamp", "-updated"]
+
+	def get_markdown(self):
+		content = self.content
+		markdown_text = markdown(content)
+		return mark_safe(markdown_text)
 
 	@property
 	def comments(self):
