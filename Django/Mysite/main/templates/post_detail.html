@@ -128,7 +128,7 @@
 					<img src='{{ instance.image.url }}' class='img-responsive'/>
 					{% endif %}
 					<p>게시:{{ instance.timestamp|timesince }} | 변경: {{ instance.updated|timesince }}</p>
-					<h3>{{ instance.content|linebreaks }}</h3>
+					<h3 class ="content-markdown">{{ instance.content }}</h3>
 					<br/><br/>
 					<div>
 						<hr/>
@@ -220,5 +220,8 @@
             $(this).parent().next(".comment-reply").fadeToggle();
         })
 	</script>
+	<script
+  		src="http://code.jquery.com/jquery-1.12.4.js" integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU=" crossorigin="anonymous">
+  	</script>
 
 {% endblock content %}

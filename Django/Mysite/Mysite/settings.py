@@ -26,7 +26,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '5l8u#ze^8p3(@thhlo$8*_46q%8+05x4^-i+i(vn67z9s-b@(l'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crispy_forms',
-    
+    'pagedown',
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
@@ -88,7 +88,7 @@ DATABASES = {
         'NAME': 'Django',
         'USER' : 'Django',
         'PASSWORD' : 'inhatc04',
-        'HOST' : 'localhost',
+        'HOST' : 'ec2-18-220-63-169.us-east-2.compute.amazonaws.com',
         'PORT' : '',
     }
 }

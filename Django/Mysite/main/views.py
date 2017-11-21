@@ -31,8 +31,8 @@ def post_create(request):
 		return redirect("/")
 
 def post_update(request, id=None):
-	if request.user.is_authenticated():
-		instance = get_object_or_404(Post, id=id)
+	instance = get_object_or_404(Post, id=id)
+	if (request.user == instance.user) or request.user.is_staff or request.user.is_superuser:
 		form = PostForm(request.POST or None, request.FILES or None, instance=instance)
 		if form.is_valid():
 			instance = form.save(commit=False)
