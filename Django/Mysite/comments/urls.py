@@ -21,10 +21,11 @@ from django.contrib import admin
 
 from .views import (
     comment_thread,
+    comment_delete,
     )
 
 urlpatterns = [
     url(r'^(?P<id>\d+)/$', comment_thread, name='thread'),
-    #url(r'^post/(?P<id>\d+)/delete/$', comment_delete, name='cdelete'),
+    url(r'^(?P<id>\d+)/delete/$', comment_delete, name='c_delete'),    
 ]
 

@@ -122,13 +122,13 @@
 				<div class="col-md-8 col-md-offset-2">
 					<div>
 							<p>{{ comment.content }}</p>
-							<footer>작성자: {{ comment.user }} | {{ comment.timestamp|timesince }} 전 | {% if comment.children.count > 0%}댓글 {{ comment.children.count }}{% if comment.children.count >= 1 %} | {% endif %}{% endif %}</footer>
+							<footer>작성자: {{ comment.user }} | {{ comment.timestamp|timesince }} 전 | {% if comment.children.count > 0%}댓글 {{ comment.children.count }}{% if comment.children.count >= 1 %} | {% endif %}{% endif %}{% if request.user == comment.user %}<a href="{{ comment.get_delete_url }}">Delete</a>{% endif %}</footer>
 							<hr/>
 							<div>
 							{% for child_comment in comment.children %}
 								<blockquote>
 									<p>{{ child_comment.content }}</p>
-									<footer>작성자: {{ child_comment.user }} | {{ child_comment.timestamp|timesince }} 전</footer>
+									<footer>작성자: {{ child_comment.user }} | {{ child_comment.timestamp|timesince }} 전 </footer>
 								</blockquote>
 							{% endfor %}
 

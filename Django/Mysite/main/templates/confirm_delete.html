@@ -53,17 +53,10 @@
 	<link rel="stylesheet" href="/static/main/css/style.css">
 	<!-- Modernizr JS -->
 	<script src="/static/main/js/modernizr-2.6.2.min.js"></script>
-	<style>
-		.wmd-panel {
- 			margin-right: 0px !important;
-  			margin-left: 0px !important;
-		}
-	</style>
 	<!-- FOR IE9 below -->
 	<!--[if lt IE 9]>
 	<script src="js/respond.min.js"></script>
 	<![endif]-->
-	{{ form.media }}
 
 {% endblock extra_head %}
 
@@ -115,37 +108,32 @@
 				<div class="col-md-12">
 					<a href="#" class="fh5co-menu-btn js-fh5co-menu-btn">Menu <i class="icon-menu"></i></a>
 					<a class="navbar-brand" href="/">도돔돔</a>
-					
 					</form>	
 				</div>
 			</div>
 		</div>
 	</header>
 	<!-- END .header -->
-	
-	
+		
 	<div id="fh5co-main">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-6">
-					<div class="content-preview">
-						<h2 id="preview-title"></h2><hr/>
-						<p id="preview-content"></p>
+				<div class="col-md-8 col-md-offset-2">
+					<div>
+
+							{% if request.user.is_authenticated %}
+							<form method="POST" action=".">{% csrf_token %}
+								<p> 댓글 "{{ object.content }}" 를 삭제하겠습니까?</p>
+								
+								<input type='submit' class="btn btn-warning" value="확인">
+								<a href = "{{ object.get_absolute_url }}" class="btn btn-default">취소</a>
+							</form>
+							{% else %}
+							<p>로그인해야만 댓글을 입력할 수 있습니다.</p>
+							{% endif %}
+							</div>
+						<hr/>
 					</div>
-				</div>
-				<div class="col-md-6">
-					<form method='POST' action='' enctype='multipart/form-data' content='text/html; charset=UTF-8'>{% csrf_token %}
-						{{ form|crispy }}
-						{% if request.user.is_authenticated %}
-						
-					
-					<p class="fh5co-social-icons">
-						<button type="submit" class="btn btn-warning">
-							<div>저장하기<div>
-						</button>
-					</p>
-					</form>
-					{% endif %}
 				</div>
         	</div>
        </div>
@@ -156,7 +144,6 @@
 		<div class="container">
 			<div class="row row-padded">
 				<div class="col-md-12 text-center">
-					
 					<p><small>&copy; Hydrogen Free HTML5 Template. All Rights Reserved. <br>Designed by: <a href="http://freehtml5.co/" target="_blank">FREEHTML5.co</a> | Images by: <a href="http://pexels.com" target="_blank">Pexels</a> </small></p>
 					
 				</div>
@@ -182,5 +169,11 @@
 	<!-- Main JS -->
 	<script src="/static/main/js/main.js"></script>
 	<script src="/static/main/js/script.js"></script>
-	
+	<script>
+		$(".comment-reply-btn").click(function(event){
+            event.preventDefault();
+            $(this).parent().next(".comment-reply").fadeToggle();
+        })
+	</script>
+
 {% endblock content %}
