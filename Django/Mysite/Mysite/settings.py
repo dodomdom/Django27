@@ -89,7 +89,7 @@ DATABASES = {
         'NAME': 'Django',
         'USER' : 'Django',
         'PASSWORD' : 'inhatc04',
-        'HOST' : 'ec2-18-220-63-169.us-east-2.compute.amazonaws.com',
+        'HOST' : 'localhost',
         'PORT' : '',
     }
 }
